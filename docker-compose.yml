@@ -1,0 +1,23 @@
+version: '3'
+ 
+services:
+    budgetapi:
+      image: budgetapi
+      depends_on:
+        - "postgres_image"
+      build:
+        context: .
+        dockerfile: BudgetApi/Dockerfile
+      ports:
+        - "5000:80"
+      environment:
+        DB_CONNECTION_STRING: "host=postgres_image;port=5432;database=budget_db;username=dbuser;password=dbpwd"
+
+    postgres_image:
+      image: postgres:alpine
+      ports:
+        - "5432:5432"
+      environment:
+        POSTGRES_USER: "dbuser"
+        POSTGRES_PASSWORD: "dbpwd"
+        POSTGRES_DB: "budget_db"
