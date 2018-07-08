@@ -13,15 +13,13 @@ WORKDIR /app/BudgetApi
 RUN dotnet build
 
 
-FROM build AS testrunner
-WORKDIR /app/BudgetApi.Tests
-ENTRYPOINT ["dotnet", "test", "--logger:trx"]
+# FROM build AS testrunner
+# WORKDIR /app/BudgetApi.Tests
+# ENTRYPOINT ["dotnet", "test", "--logger:trx"]
 
-
-FROM build AS test
-WORKDIR /app/BudgetApi.Tests
-RUN dotnet test
-
+# FROM build AS test
+# WORKDIR /app/BudgetApi.Tests
+# RUN sudo dotnet test
 
 FROM build AS publish
 WORKDIR /app/BudgetApi
