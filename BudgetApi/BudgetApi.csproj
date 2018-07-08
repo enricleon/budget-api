@@ -17,8 +17,4 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="3.0.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\BudgetApi.Tests\BudgetApi.Tests.csproj" />
-  </ItemGroup>
-
 </Project>

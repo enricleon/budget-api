@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using BudgetApi.Application.Models;
 using BudgetApi.Application.Repositories;
+using BudgetApi.Projection.UserDetails;
 
 namespace BudgetApi.Application.Controllers
 {
@@ -14,29 +15,38 @@ namespace BudgetApi.Application.Controllers
     public class UsersController : ControllerBase
     {
         private readonly UsersRepository _usersRepository;
+        private readonly UserDetailsFinder _userDetailsFinder;
         public UsersController()
         {
             string connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
             _usersRepository = new UsersRepository(connectionString);
+            _userDetailsFinder = new UserDetailsFinder(connectionString);
         }
 
         // GET api/users
         [HttpGet]
-        public ActionResult<IEnumerable<User>> Get()
+        public IEnumerable<User> Get()
         {
             return _usersRepository.GetAllUsers()?.ToArray();
         }
 
         // GET api/users/5
         [HttpGet("{id}")]
-        public ActionResult<User> Get(int id)
+        public User Get(int id)
         {
             return _usersRepository.GetUserById(id);
         }
 
+        // POST api/users/5/balance
+        [HttpGet("{id}/balance")]
+        public UserDetailsProjection Balance(int id)
+        {
+            return _userDetailsFinder.GetUserDetails(id);
+        }
+
         // POST api/users
         [HttpPost]
-        public ActionResult<int> Post([FromBody] string name)
+        public int Post([FromBody] string name)
         {
             return _usersRepository.AddNewUser(name);
         }

@@ -30,15 +30,15 @@ namespace BudgetApi.Domain.Commands
         public void TransferFunds(int userId, int targetUserId, double amount)
         {
             var user = _usersRepository.GetUserById(userId);
-            var targetUser = _usersRepository.GetUserById(userId);
+            var targetUser = _usersRepository.GetUserById(targetUserId);
 
             using (var session = _store.OpenSession())
             {
-                var addedFunds = new FundsAddedEvent(userId, amount);
-                var removedFunds = new FundsRemovedEvent(targetUserId, amount);
+                var addedFunds = new FundsAddedEvent(targetUserId, amount);
+                var removedFunds = new FundsRemovedEvent(userId, amount);
 
-                session.Events.Append(targetUser.Account, removedFunds);
-                session.Events.Append(user.Account, addedFunds);
+                session.Events.Append(targetUser.Account, addedFunds);
+                session.Events.Append(user.Account, removedFunds);
                 session.SaveChanges();
             }
         }
