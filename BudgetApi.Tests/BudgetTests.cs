@@ -2,6 +2,8 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BudgetApi.Tests;
 using BudgetApi.Application.Controllers;
+using BudgetApi.Application.Models;
+using BudgetApi.Application.Models.Events;
 
 namespace BudgetApi.Tests
 {
@@ -9,7 +11,7 @@ namespace BudgetApi.Tests
     public class ValuesTests : PostgresTestBase
     {
         [TestMethod]
-        public void Get_NoValuesSaved_ReturnEmptyList()
+        public void Get_NoUsersCreated_ReturnEmptyList()
         {
             var controller = new UsersController();
 
@@ -18,50 +20,33 @@ namespace BudgetApi.Tests
             Assert.AreEqual(0, result.Count());
         }
 
-        // [TestMethod]
-        // public void GetById_NoValuesSaved_ReturnNull()
-        // {
-        //     var controller = new MoneyController();
+        [TestMethod]
+        public void Post_SingleUser_GetByIdReturnsUser()
+        {
+            var controller = new UsersController();
 
-        //     var result = controller.Get(1);
+            var postResult = controller.Post("Enric");
+            var result = controller.Get(postResult);
 
-        //     Assert.IsNull(result);
-        // }
+            Assert.AreEqual("Enric", result.Name);
+        }
 
-        // [TestMethod]
-        // public void Post_SingleValue_GetByIdReturnsValue()
-        // {
-        //     var controller = new MoneyController();
+        [TestMethod]
+        public void Add_Funds_GetBalanceIsFund()
+        {
+            var usersController = new UsersController();
+            var moneyController = new MoneyController();
 
-        //     var postResult = controller.Post("1234");
-        //     var result = controller.Get(postResult);
+            int user1 = usersController.Post("User1");
+            int user2 = usersController.Post("User2");
 
-        //     Assert.AreEqual("1234", result);
-        // }
+            moneyController.Add(new AddFunds {
+                UserId = user1, 
+                Amount = 20
+            });
+            var response = usersController.Balance(user1);
 
-        // [TestMethod]
-        // public void Post_ThreeValues_GetReturnsAllValues()
-        // {
-        //     var controller = new MoneyController();
-
-        //     controller.Post("1");
-        //     controller.Post("2");
-        //     controller.Post("3");
-        //     var result = controller.Get();
-
-        //     CollectionAssert.AreEquivalent(new[]{"1","2","3"}, result.ToArray());
-        // }
-
-        // [TestMethod]
-        // public void Delete_AddOneValueThenDeleteIt_GetReturnsEmptySquance()
-        // {
-        //     var controller = new MoneyController();
-
-        //     var postResult = controller.Post("1");
-        //     controller.Delete(postResult);
-        //     var result = controller.Get();
-
-        //     Assert.AreEqual(0, result.Count());
-        // }
+            Assert.AreEqual(20, response.Balance);
+        }
     }
 }
