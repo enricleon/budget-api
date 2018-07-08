@@ -1,9 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using BudgetApi.Models;
+using BudgetApi.Application.Models;
 using Marten;
 
-namespace BudgetApi.Repositories
+namespace BudgetApi.Application.Repositories
 {
     public class UsersRepository
     {
@@ -42,7 +43,10 @@ namespace BudgetApi.Repositories
 
         public int AddNewUser(string name)
         {
-            var newUser = new User { Name = name };
+            var newUser = new User { 
+                Name = name,
+                Account = Guid.NewGuid()
+            };
 
             using (var session = Store.OpenSession())
             {

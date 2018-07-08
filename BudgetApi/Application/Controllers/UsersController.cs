@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-using BudgetApi.Models;
-using BudgetApi.Repositories;
+using BudgetApi.Application.Models;
+using BudgetApi.Application.Repositories;
 
-namespace BudgetApi.Controllers
+namespace BudgetApi.Application.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
