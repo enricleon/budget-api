@@ -49,11 +49,10 @@ namespace BudgetApi
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
             app.UseMvc();
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My simple API"); });
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Budget API"); });
         }
     }
 }
