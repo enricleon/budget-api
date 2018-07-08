@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using BudgetApi.Application.Models;
 using BudgetApi.Application.Repositories;
+using BudgetApi.Application.Models.Events;
 using BudgetApi.Domain.Commands;
 
 namespace BudgetApi.Application.Controllers
@@ -22,17 +23,17 @@ namespace BudgetApi.Application.Controllers
         }
 
         // POST api/money/add
-        [HttpPost]
-        public void Add([FromBody] double amount, [FromBody] int userId)
+        [HttpPost("add")]
+        public void Add([FromBody] AddFunds addFunds)
         {
-            _moneyCommands.AddFunds(userId, amount);
+            _moneyCommands.AddFunds(addFunds.UserId, addFunds.Amount);
         }
 
         // POST api/money/transfer
-        [HttpPost]
-        public void Transfer([FromBody] double amount, [FromBody] int userId, [FromBody] int targetUserId)
+        [HttpPost("transfer")]
+        public void Transfer([FromBody] TransferFunds transfer)
         {
-            _moneyCommands.TransferFunds(userId, targetUserId, amount);
+            _moneyCommands.TransferFunds(transfer.UserId, transfer.TargetUserId, transfer.Amount);
         }
     }
 }

@@ -11,6 +11,7 @@ namespace BudgetApi.Domain.Commands
         public MoneyCommands(string connectionString)
         {
             _store = DocumentStore.For(connectionString);
+            _usersRepository = new UsersRepository(connectionString);
         }
 
         public void AddFunds(int userId, double amount)

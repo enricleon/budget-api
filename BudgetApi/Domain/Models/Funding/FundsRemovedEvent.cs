@@ -9,7 +9,7 @@ namespace BudgetApi.Domain.Model.MoneyTransfer
 
         public FundsRemovedEvent(int userId, double amount)
         {
-            UserId = UserId;
+            UserId = userId;
             Amount = amount;
         }
 
